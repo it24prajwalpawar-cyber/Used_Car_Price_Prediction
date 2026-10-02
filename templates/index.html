@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AutoPrice | Used Car Valuation</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="header">
+
+        <div class="logo">
+            AutoPrice
+        </div>
+
+        <nav>
+            <a href="#predict">Predict</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#about">About</a>
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="tag">
+                AI-POWERED CAR VALUATION
+            </div>
+
+            <h1>
+                Know What Your
+                <span>Car Is Worth.</span>
+            </h1>
+
+            <p class="hero-text">
+                Get an estimated used-car selling price based on
+                vehicle age, usage, fuel type, transmission and
+                ownership details.
+            </p>
+
+            <a href="#predict" class="hero-button">
+                Estimate My Car
+                <span>→</span>
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PREDICTION ================= -->
+
+    <section class="prediction-section" id="predict">
+
+        <div class="prediction-card">
+
+            <div class="card-top">
+
+                <div>
+                    <span class="section-label">
+                        CAR VALUATION
+                    </span>
+
+                    <h2>
+                        Tell us about your car
+                    </h2>
+
+                    <p>
+                        Enter the details below to estimate
+                        its current selling price.
+                    </p>
+                </div>
+
+                <div class="step-number">
+                    01
+                </div>
+
+            </div>
+
+
+            <form method="POST">
+
+                <div class="form-grid">
+
+
+                    <!-- CAR AGE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Car Age
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <input
+                                type="number"
+                                name="car_age"
+                                placeholder="e.g. 5"
+                                min="0"
+                                required
+                            >
+
+                            <span>years</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- KM DRIVEN -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Kilometers Driven
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <input
+                                type="number"
+                                name="km_driven"
+                                placeholder="e.g. 40000"
+                                min="0"
+                                required
+                            >
+
+                            <span>km</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FUEL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Fuel Type
+                        </label>
+
+                        <select
+                            name="fuel"
+                            required
+                        >
+
+                            <option value="">
+                                Choose fuel
+                            </option>
+
+                            <option value="Petrol">
+                                Petrol
+                            </option>
+
+                            <option value="Diesel">
+                                Diesel
+                            </option>
+
+                            <option value="CNG">
+                                CNG
+                            </option>
+
+                            <option value="LPG">
+                                LPG
+                            </option>
+
+                            <option value="Electric">
+                                Electric
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- SELLER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Seller Type
+                        </label>
+
+                        <select
+                            name="seller_type"
+                            required
+                        >
+
+                            <option value="">
+                                Choose seller
+                            </option>
+
+                            <option value="Individual">
+                                Individual
+                            </option>
+
+                            <option value="Dealer">
+                                Dealer
+                            </option>
+
+                            <option value="Trustmark Dealer">
+                                Trustmark Dealer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TRANSMISSION -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Transmission
+                        </label>
+
+                        <select
+                            name="transmission"
+                            required
+                        >
+
+                            <option value="">
+                                Choose transmission
+                            </option>
+
+                            <option value="Manual">
+                                Manual
+                            </option>
+
+                            <option value="Automatic">
+                                Automatic
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- OWNER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Previous Ownership
+                        </label>
+
+                        <select
+                            name="owner"
+                            required
+                        >
+
+                            <option value="">
+                                Choose owner type
+                            </option>
+
+                            <option value="First Owner">
+                                First Owner
+                            </option>
+
+                            <option value="Second Owner">
+                                Second Owner
+                            </option>
+
+                            <option value="Third Owner">
+                                Third Owner
+                            </option>
+
+                            <option value="Fourth & Above Owner">
+                                Fourth & Above Owner
+                            </option>
+
+                            <option value="Test Drive Car">
+                                Test Drive Car
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="predict-button"
+                >
+                    <span>Calculate Estimated Price</span>
+                    <strong>→</strong>
+                </button>
+
+            </form>
+
+
+            <!-- ================= RESULT ================= -->
+
+            {% if prediction %}
+
+            <div class="result">
+
+                <div class="result-label">
+                    ESTIMATED SELLING PRICE
+                </div>
+
+                <h2>
+                    ₹ {{ "{:,.0f}".format(prediction) }}
+                </h2>
+
+                <p>
+                    Estimated using our trained
+                    Multiple Linear Regression model.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section
+        class="how-section"
+        id="how-it-works"
+    >
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                SIMPLE PROCESS
+            </span>
+
+            <h2>
+                How AutoPrice Works
+            </h2>
+
+            <p>
+                Three simple steps from your car details
+                to an estimated price.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step-card">
+
+                <div class="step-icon">
+                    01
+                </div>
+
+                <h3>
+                    Enter Details
+                </h3>
+
+                <p>
+                    Provide basic information about
+                    your used car.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-icon">
+                    02
+                </div>
+
+                <h3>
+                    Model Analysis
+                </h3>
+
+                <p>
+                    Our trained regression model
+                    processes the information.
+                </p>
+
+            </div>
+
+
+            <div class="step-card">
+
+                <div class="step-icon">
+                    03
+                </div>
+
+                <h3>
+                    Get Estimate
+                </h3>
+
+                <p>
+                    Receive an estimated selling
+                    price instantly.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MODEL INFO ================= -->
+
+    <section
+        class="about"
+        id="about"
+    >
+
+        <div class="section-heading">
+
+            <span class="section-label">
+                MACHINE LEARNING MODEL
+            </span>
+
+            <h2>
+                Built With Data
+            </h2>
+
+            <p>
+                Our project uses Multiple Linear Regression
+                to estimate used-car selling prices.
+            </p>
+
+        </div>
+
+
+        <div class="model-info">
+
+
+            <div>
+
+                <strong>
+                    Algorithm
+                </strong>
+
+                <span>
+                    Multiple Linear Regression
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    MAE
+                </strong>
+
+                <span>
+                    ₹2.22 Lakh
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    RMSE
+                </strong>
+
+                <span>
+                    ₹4.27 Lakh
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    R² Score
+                </strong>
+
+                <span>
+                    0.4033
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-logo">
+            AutoPrice
+        </div>
+
+        <p>
+            Used Car Price Prediction · Machine Learning Project
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
